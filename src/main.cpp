@@ -6,6 +6,7 @@
 #include<sstream>
 #include<iomanip>
 #include<functional>
+#include <cstdlib>
 
 /*
 MediaTracker.cpp
@@ -996,7 +997,14 @@ void runAddMenu(std::vector<Media>& mediaList){
     callMenuAction("Add Media Menu", addMenuOptions);
 }
 
+
+void resizeConsoleWindow(int height, int width){
+    std::cout << "\x1b[8;" << height << ";" << width << "t";
+}
+
 int main(){
+    resizeConsoleWindow(40, 140); 
+
     bool isRunning = true;
     std::vector<Media> myMedia;
 
