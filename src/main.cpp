@@ -59,7 +59,7 @@ struct Media{
     std::string source = "";
 };
 
-struct MenuOption {
+struct MenuOption{
     std::string label;
     std::function<void()> action;
 };
@@ -725,7 +725,8 @@ std::vector<Media> sortMediaByRating(const std::vector<Media>& mediaList){
     
     for(int i = 10; i >= 1; i--){
         for(const auto& media: mediaList){
-            if(media.rating == i) sortedMedia.push_back(media);
+            if(media.rating == i) 
+                sortedMedia.push_back(media);
         }
     }
 
@@ -764,6 +765,22 @@ std::vector<Media> sortMediaByViewDate(const std::vector<Media>& mediaList, Sort
     }
     
     return sortedMedia;
+}
+
+std::vector<Media> sortMediaByAmountViewed(std::vector<Media> mediaList){
+    for (int i = 1; i < (int)mediaList.size(); ++i) {
+        Media key = mediaList[i];
+        int j = i - 1;
+
+        while (j >= 0 && mediaList[j].amountViewed < key.amountViewed) {
+            mediaList[j + 1] = mediaList[j];
+            j--;
+        }
+        
+        mediaList[j + 1] = key;
+    }
+
+    return mediaList;
 }
 
 enum class EditField{ RATING, STATUS, AMOUNT, VIEWDATE, NAME, SOURCE, TYPE };
@@ -930,6 +947,7 @@ void runSortMenu(const std::vector<Media>& mediaList){
         {"Sort By Highest Rating",        [&]() { printMediaTable(sortMediaByRating(mediaList)); }},
         {"Sort By Most Recent View Date", [&]() { printMediaTable(sortMediaByViewDate(mediaList, SortDirection::MOST_RECENT)); }},
         {"Sort By Oldest View Date",      [&]() { printMediaTable(sortMediaByViewDate(mediaList, SortDirection::LEAST_RECENT)); }},
+        {"Sort By Amount Viewed",         [&]() { printMediaTable(sortMediaByAmountViewed(mediaList)); }},
     };
 
     callMenuAction("Sort Menu", sortMenuOptions);
