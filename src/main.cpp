@@ -783,6 +783,22 @@ std::vector<Media> sortMediaByAmountViewed(std::vector<Media> mediaList){
     return mediaList;
 }
 
+std::vector<Media> sortMediaByAlphabet(std::vector<Media> mediaList){
+    for (int i = 1; i < (int)mediaList.size(); ++i) {
+        Media key = mediaList[i];
+        int j = i - 1;
+
+        while (j >= 0 && mediaList[j].name > key.name) {
+            mediaList[j + 1] = mediaList[j];
+            j--;
+        }
+        
+        mediaList[j + 1] = key;
+    }
+
+    return mediaList;
+}
+
 enum class EditField{ RATING, STATUS, AMOUNT, VIEWDATE, NAME, SOURCE, TYPE };
 void editMedia(std::vector<Media>& mediaList, EditField field){
     std::string targetName = getNameTarget();
@@ -948,6 +964,7 @@ void runSortMenu(const std::vector<Media>& mediaList){
         {"Sort By Most Recent View Date", [&]() { printMediaTable(sortMediaByViewDate(mediaList, SortDirection::MOST_RECENT)); }},
         {"Sort By Oldest View Date",      [&]() { printMediaTable(sortMediaByViewDate(mediaList, SortDirection::LEAST_RECENT)); }},
         {"Sort By Amount Viewed",         [&]() { printMediaTable(sortMediaByAmountViewed(mediaList)); }},
+        {"Sort By Alphabet",              [&]() { printMediaTable(sortMediaByAlphabet(mediaList)); }},
     };
 
     callMenuAction("Sort Menu", sortMenuOptions);
