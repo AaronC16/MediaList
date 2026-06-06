@@ -756,7 +756,7 @@ std::vector<Media> sortMediaByViewDate(const std::vector<Media>& mediaList, Sort
     return sortedMedia;
 }
 
-enum class EditField{ RATING, STATUS, AMOUNT, VIEWDATE, NAME, SOURCE };
+enum class EditField{ RATING, STATUS, AMOUNT, VIEWDATE, NAME, SOURCE, TYPE };
 void editMedia(std::vector<Media>& mediaList, EditField field){
     std::string targetName = getNameTarget();
     int targetIndex = -1;
@@ -810,6 +810,19 @@ void editMedia(std::vector<Media>& mediaList, EditField field){
     if(field == EditField::SOURCE){
         std::string newSource = promptStringUntilValid("Enter Source: ", isValidSource);
         mediaList[targetIndex].source = newSource;
+    }
+
+    if(field == EditField::TYPE){
+        std::string prompt = "Enter Type(";
+        for(int i = 0; i < (int)MEDIA_TYPE_TABLE.size(); i++){
+            prompt += MEDIA_TYPE_TABLE[i].label;
+            if(i != (int)MEDIA_TYPE_TABLE.size() - 1)
+                prompt += ", ";
+        }
+        prompt += "): ";
+
+        std::string newType = promptStringUntilValid(prompt, static_cast<bool(*)(std::string)>(isValidType));
+        mediaList[targetIndex].type = stringToMediaType(newType);
     }
 
     std::cout << "Edit Successful!\n";
@@ -894,6 +907,7 @@ void runEditMenu(std::vector<Media>& mediaList){
         {"Edit Date Last Viewed", [&]() { editMedia(mediaList, EditField::VIEWDATE); }},
         {"Edit Title",            [&]() { editMedia(mediaList, EditField::NAME); }},
         {"Edit Source",           [&]() { editMedia(mediaList, EditField::SOURCE); }},
+        {"Edit Type",             [&]() { editMedia(mediaList, EditField::TYPE); }},
     }; 
 
     callMenuAction("Edit Menu", editMenuOptions);
