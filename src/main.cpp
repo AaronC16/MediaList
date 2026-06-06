@@ -591,7 +591,7 @@ bool isValidYear(std::string year){
     return true;
 }
 
-enum class SearchField{ NAME, STATUS, TYPE, SOURCE, YEAR_ADDED, YEAR_VIEWED };
+enum class SearchField{ NAME, STATUS, TYPE, SOURCE, YEAR_ADDED, YEAR_VIEWED, RATING };
 std::vector<Media> searchMedia(const std::vector<Media>& mediaList, const SearchField& field){
     std::vector<Media> result;
     
@@ -675,6 +675,16 @@ std::vector<Media> searchMedia(const std::vector<Media>& mediaList, const Search
         std::string year = promptStringUntilValid(prompt, isValidYear);
         for(const auto& media : mediaList){
             if(media.dateLastViewed.substr(0,4) == year) 
+                result.push_back(media);
+        }
+    }
+
+    if(field == SearchField::RATING){
+        std::string prompt = "Enter Rating(1 - 10): ";
+        int searchRating = promptIntUntilValid(prompt, isValidRating);
+
+        for(const auto& media : mediaList){
+            if(media.rating == searchRating)
                 result.push_back(media);
         }
     }
@@ -933,6 +943,7 @@ void runSearchMenu(const std::vector<Media>& mediaList){
         {"Search by Source",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::SOURCE)); }},
         {"Search by Year Added",  [&]() { printMediaTable(searchMedia(mediaList, SearchField::YEAR_ADDED)); }},
         {"Search by Year Viewed", [&]() { printMediaTable(searchMedia(mediaList, SearchField::YEAR_VIEWED)); }},
+        {"Search by Rating",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::RATING)); }},
     };
 
     callMenuAction("Search Menu", searchMenuOptions);
