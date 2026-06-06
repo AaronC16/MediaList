@@ -911,13 +911,14 @@ void runDeleteMenu(std::vector<Media>& mediaList){
 void runEditMenu(std::vector<Media>& mediaList){
     std::vector<MenuOption> editMenuOptions = {
         {"Exit To Main",          [&]() { returnToMainMenu(); }},
+        {"Edit Title",            [&]() { editMedia(mediaList, EditField::NAME); }},
+        {"Edit Type",             [&]() { editMedia(mediaList, EditField::TYPE); }},
         {"Edit Rating",           [&]() { editMedia(mediaList, EditField::RATING); }},
         {"Edit Status",           [&]() { editMedia(mediaList, EditField::STATUS); }},
         {"Edit Amount Viewed",    [&]() { editMedia(mediaList, EditField::AMOUNT); }},
         {"Edit Date Last Viewed", [&]() { editMedia(mediaList, EditField::VIEWDATE); }},
-        {"Edit Title",            [&]() { editMedia(mediaList, EditField::NAME); }},
         {"Edit Source",           [&]() { editMedia(mediaList, EditField::SOURCE); }},
-        {"Edit Type",             [&]() { editMedia(mediaList, EditField::TYPE); }},
+        
     }; 
 
     callMenuAction("Edit Menu", editMenuOptions);
@@ -938,12 +939,13 @@ void runSearchMenu(const std::vector<Media>& mediaList){
     std::vector<MenuOption> searchMenuOptions = {
         {"Return To Main",        [&]() { returnToMainMenu(); }},
         {"Search by Title",       [&]() { printMediaTable(searchMedia(mediaList, SearchField::NAME)); }},
-        {"Search by Status",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::STATUS)); }},
         {"Search by Type",        [&]() { printMediaTable(searchMedia(mediaList, SearchField::TYPE)); }},
-        {"Search by Source",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::SOURCE)); }},
+        {"Search by Rating",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::RATING)); }},
+        {"Search by Status",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::STATUS)); }},
         {"Search by Year Added",  [&]() { printMediaTable(searchMedia(mediaList, SearchField::YEAR_ADDED)); }},
         {"Search by Year Viewed", [&]() { printMediaTable(searchMedia(mediaList, SearchField::YEAR_VIEWED)); }},
-        {"Search by Rating",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::RATING)); }},
+        {"Search by Source",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::SOURCE)); }},
+        
     };
 
     callMenuAction("Search Menu", searchMenuOptions);
