@@ -836,6 +836,15 @@ void deleteMedia(std::vector<Media>& mediaList){
     saveToFile(mediaList, SAVE_FILE);
 }
 
+void deleteLastAddedMedia(std::vector<Media>& mediaList){
+    std::string mediaTitle = mediaList[mediaList.size() - 1].name;
+    
+    mediaList.pop_back();
+    std::cout << "\"" << mediaTitle << "\"" << " was removed from the list.\n";
+    
+    saveToFile(mediaList, SAVE_FILE);
+}
+
 //CSV for easy copy and pasting later
 void saveCSVToFile(const std::vector<Media>& mediaList, const std::string& fileName){
     std::ofstream file(fileName);
@@ -864,6 +873,16 @@ void saveCSVToFile(const std::vector<Media>& mediaList, const std::string& fileN
 
 void returnToMainMenu(){
     std::cout << "Returning To Main Menu . . .\n";
+}
+
+void runDeleteMenu(std::vector<Media>& mediaList){
+    std::vector<MenuOption> deleteMenuOptions = {
+        {"Exit To Main",      [&]() { returnToMainMenu(); }},
+        {"Delete by Title",   [&]() { deleteMedia(mediaList); }},
+        {"Delete Last Added", [&]() { deleteLastAddedMedia(mediaList); }},
+    };
+
+    callMenuAction("DeleteMenu", deleteMenuOptions);
 }
 
 void runEditMenu(std::vector<Media>& mediaList){
@@ -926,7 +945,7 @@ int main(){
         {"Search Media", [&]() { runSearchMenu(myMedia); }},
         {"Sort Media",   [&]() { runSortMenu(myMedia); }},
         {"Edit Media",   [&]() { runEditMenu(myMedia); }},
-        {"Delete Media", [&]() { deleteMedia(myMedia); }},
+        {"Delete Media", [&]() { runDeleteMenu(myMedia); }},
         {"Write To CSV", [&]() { saveCSVToFile(myMedia, "MediaListCSV.txt"); }},
     };
 
@@ -939,4 +958,4 @@ int main(){
     saveToFile(myMedia, SAVE_FILE);
 
     return 0;
-}
+} 

@@ -132,28 +132,3 @@ dateAdded=2020-03-08
 dateLastViewed=2023-05-12
 source=HBO Max
 ---
-name=Frieren
-rating=10
-status=COMPLETED
-amountViewed=28
-dateAdded=2023-12-01
-dateLastViewed=2025-01-08
-source=Crunchyroll
----
-name=Uzumaki
-type=SHOW
-rating=8
-amountViewed=20
-dateAdded=2022-09-14
-dateLastViewed=2022-10-01
-source=Viz Media
----
-name=Blade Runner 2049
-type=MANGA
-rating=8
-status=IN_PROGRESS
-amountViewed=0
-dateAdded=2024-11-05
-dateLastViewed=2022-10-01
-source=Amazon Prime
----
