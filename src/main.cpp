@@ -444,6 +444,15 @@ void loadFromFile(std::vector<Media>& mediaList, const std::string& fileName){
     file.close();
 }
 
+bool isDuplicateMedia(const Media& media, const std::vector<Media>& mediaList){
+    for(int i = 0; i < (int)mediaList.size(); i++){
+        if(media.name == mediaList[i].name)
+            if(media.type == mediaList[i].type)
+                return true;
+    }
+    return false;
+}
+
 void addMedia(std::vector<Media>& mediaList){
     Media a;
     
@@ -462,8 +471,13 @@ void addMedia(std::vector<Media>& mediaList){
     }
 
     std::cout << "\n";
-    mediaList.push_back(a);
-    saveToFile(mediaList, SAVE_FILE);
+    if(!isDuplicateMedia(a, mediaList)){
+        mediaList.push_back(a);
+        saveToFile(mediaList, SAVE_FILE);
+    } else {
+        std::cout << "This media is already in the list.\n";
+    }
+    
 }
 
 /*  
@@ -542,9 +556,13 @@ void quickAddMedia(std::vector<Media>& mediaList){
     m.source = field;
 
     if(validString){
-        std::cout << "Successfully inputted Media String\n";
-        mediaList.push_back(m);
-        saveToFile(mediaList, SAVE_FILE);
+        if(!isDuplicateMedia(m, mediaList)){
+            std::cout << "Successfully inputted Media String\n\n";
+            mediaList.push_back(m);
+            saveToFile(mediaList, SAVE_FILE);
+        } else {
+            std::cout << "This media is already in the list.\n";
+        }
     }else {
         std::cout << "ERROR: Invalid String\n";
     }

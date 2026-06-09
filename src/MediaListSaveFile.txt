@@ -115,3 +115,12 @@ dateAdded=2020-03-08
 dateLastViewed=2023-05-12
 source=HBO Max
 ---
+name=Arcane
+type=SHOW
+rating=9
+status=COMPLETED
+amountViewed=18
+dateAdded=2026-06-09
+dateLastViewed=2026-06-09
+source=Netflix
+---
