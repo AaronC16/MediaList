@@ -4,15 +4,6 @@ dateAdded=2021-03-14
 dateLastViewed=2021-06-02
 source=Netflix
 ---
-name=Berserk
-type=SHOW
-rating=10
-status=COMPLETED
-amountViewed=380
-dateAdded=2022-07-10
-dateLastViewed=2024-11-18
-source=Viz Media
----
 name=Inception
 type=MANGA
 rating=9
@@ -114,14 +105,6 @@ rating=10
 amountViewed=142
 dateAdded=2019-07-04
 dateLastViewed=2024-07-04
-source=Netflix
----
-name=Arcane
-rating=10
-status=COMPLETED
-amountViewed=87
-dateAdded=2021-11-20
-dateLastViewed=2026-04-23
 source=Netflix
 ---
 name=Goodfellas

@@ -890,8 +890,19 @@ void deleteMedia(std::vector<Media>& mediaList){
         }
     }
 
-    mediaList.erase(mediaList.begin() + targetIndex);
-    saveToFile(mediaList, SAVE_FILE);
+    std::string confirmation;
+    std::cout << "! ! ! Are you sure you would like to delete \"" << targetName << "\" from the list?\n"
+              << "(Type \"DELETE\" or \"CANCEL\"): ";
+    std::cin >> confirmation;
+    
+    if(confirmation == "DELETE"){
+        mediaList.erase(mediaList.begin() + targetIndex);
+        saveToFile(mediaList, SAVE_FILE);
+
+        std::cout << "\"" << targetName << "\" was deleted.\n";
+    } else {
+        std::cout << "canceling deletion . . .\n";
+    }
 }
 
 void deleteLastAddedMedia(std::vector<Media>& mediaList){
@@ -940,7 +951,7 @@ void runDeleteMenu(std::vector<Media>& mediaList){
         {"Delete Last Added", [&]() { deleteLastAddedMedia(mediaList); }},
     };
 
-    callMenuAction("DeleteMenu", deleteMenuOptions);
+    callMenuAction("Delete Menu", deleteMenuOptions);
 }
 
 void runEditMenu(std::vector<Media>& mediaList){
