@@ -869,6 +869,7 @@ void editMedia(std::vector<Media>& mediaList, EditField field){
         mediaList[targetIndex].type = stringToMediaType(newType);
     }
 
+    saveToFile(mediaList, SAVE_FILE);
     std::cout << "Edit Successful!\n";
 }
 
