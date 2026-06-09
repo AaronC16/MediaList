@@ -12,7 +12,7 @@
 MediaTracker.cpp
 A personal CLI app for tracking different types of media
 Saves/loads from a key=value flat file (MediaListSaveFile.txt)
-Time: 28hrs
+Time: 30hrs
 
 Current Features: Add media(one line, prompt each field), List Media, 
                   Search Media, Sorting(by rating + ViewDate(highest + lowest)),
@@ -1003,10 +1003,13 @@ void resizeConsoleWindow(int height, int width){
 }
 
 int main(){
-    resizeConsoleWindow(40, 140); 
 
+    int WINDOW_HEIGHT = 35;
+    int WINDOW_WIDTH = 140;
     bool isRunning = true;
     std::vector<Media> myMedia;
+
+    resizeConsoleWindow(WINDOW_HEIGHT, WINDOW_WIDTH); 
 
     std::vector<MenuOption> mainMenuOptions = {
         {"Exit",         [&]() { std::cout << "Closing . . ." << "\n"; isRunning = false; }},
