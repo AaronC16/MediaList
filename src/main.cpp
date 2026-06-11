@@ -6,7 +6,9 @@
 #include<sstream>
 #include<iomanip>
 #include<functional>
-#include <cstdlib>
+#include<cstdlib>
+#include<cctype>
+#include<algorithm>
 
 /*
 MediaTracker.cpp
@@ -711,6 +713,39 @@ std::vector<Media> searchMedia(const std::vector<Media>& mediaList, const Search
     return result;
 }
 
+std::vector<Media> searchMediaByString(const std::vector<Media>& mediaList){
+    std::string searchString = promptStringUntilValid("String: ", isValidName);
+    std::vector<Media> matchedMedia;
+
+    std::transform(searchString.begin(), searchString.end(), searchString.begin(), [](unsigned char c) {
+        return std::tolower(c);
+    }); // to lower case
+
+    for(const auto& media : mediaList){
+        std::string mediaTitle = media.name;
+        std::transform(mediaTitle.begin(), mediaTitle.end(), mediaTitle.begin(), [](unsigned char c) {
+        return std::tolower(c);
+        });
+
+        int stringIndex = 0;
+        for(int titleIndex = 0; titleIndex < (int)mediaTitle.size(); titleIndex++){
+            if(searchString[stringIndex] == mediaTitle[titleIndex]){
+                stringIndex++;
+            } else {
+                stringIndex = 0;
+                if(searchString[stringIndex] == mediaTitle[titleIndex]){
+                    stringIndex++;
+                }
+            }
+            if(stringIndex == (int)searchString.size()){
+                matchedMedia.push_back(media);
+                break;
+            }
+        }
+    }
+    return matchedMedia;
+} 
+
 //Helper function for searchMedia
 std::string getNameTarget() {
     std::string target;
@@ -1011,6 +1046,7 @@ void runSearchMenu(const std::vector<Media>& mediaList){
         {"Search by Year Added",  [&]() { printMediaTable(searchMedia(mediaList, SearchField::YEAR_ADDED)); }},
         {"Search by Year Viewed", [&]() { printMediaTable(searchMedia(mediaList, SearchField::YEAR_VIEWED)); }},
         {"Search by Source",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::SOURCE)); }},
+        {"Search by String",      [&]() { printMediaTable(searchMediaByString(mediaList)); }},
         
     };
 
