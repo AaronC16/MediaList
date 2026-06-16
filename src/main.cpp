@@ -50,7 +50,7 @@ const std::string MIN_VALID_YEAR = "2022";
 const std::string CURRENT_YEAR = getCurrentDate().substr(0, 4);
 
 enum class MediaType{ UNKNOWN, SHOW, MANGA, MOVIE, COUNT };
-enum class Status { UNKNOWN, COMPLETED, IN_PROGRESS, PLANNED, DROPPED, COUNT };
+enum class Status { UNKNOWN, COMPLETED, IN_PROGRESS, PLANNED, DROPPED, WAITING, COUNT };
 struct Media{
     std::string name = "";
     MediaType type = MediaType::UNKNOWN;
@@ -90,6 +90,7 @@ const std::vector<StatusInfo> STATUS_TABLE = {
     { Status::IN_PROGRESS, 2, "IN_PROGRESS" },
     { Status::PLANNED, 3, "PLANNED" },
     { Status::DROPPED, 4, "DROPPED" },
+    { Status::WAITING, 5, "WAITING" },
 };
 
 std::string mediaTypeToString(MediaType type) {
