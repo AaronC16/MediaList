@@ -747,14 +747,40 @@ std::vector<Media> searchMediaByString(const std::vector<Media>& mediaList){
     return matchedMedia;
 } 
 
-//Helper function for searchMedia
-std::string getNameTarget() {
-    std::string target;
 
-    std::cout << "Enter title: ";
-    std::getline(std::cin, target);
+bool getNameTarget(const std::vector<Media>& mediaList, std::string& name, MediaType& type) {
+    std::string target = promptStringUntilValid("Enter Title: ", isValidName);
+    std::vector<Media> mediaInstances = {};
 
-    return target;
+    for(const auto& media : mediaList){
+        if(target == media.name)
+            mediaInstances.push_back(media);
+    }
+
+    name = target;
+    if(mediaInstances.size() == 1){
+        type = mediaInstances[0].type;
+        return true;
+    } else if(mediaInstances.size() > 1){
+        int menuSelection;
+
+        std::cout << "\nMultiple instances of " << target << " have been found.\n"
+                  << "Choose based on media type . . .\n";
+
+        for(int i = 0; i < (int)mediaInstances.size(); i ++){
+            std::cout << i + 1 << ": " << mediaTypeToString(mediaInstances[i].type) << "\n";
+        }
+
+        std::cout << "Selection: ";
+        std::cin >> menuSelection;
+        std::cout << "\n";
+        menuSelection--; //menus are 1-indexed
+
+        type = mediaInstances[menuSelection].type;
+        return true;
+    }
+
+    return false;
 }
 
 //Helper function for searchMedia
@@ -856,17 +882,20 @@ std::vector<Media> sortMediaByAlphabet(std::vector<Media> mediaList){
 
 enum class EditField{ RATING, STATUS, AMOUNT, VIEWDATE, NAME, SOURCE, TYPE };
 void editMedia(std::vector<Media>& mediaList, EditField field){
-    std::string targetName = getNameTarget();
+    std::string targetName;
+    MediaType targetType;
+    
+    bool mediaFound = getNameTarget(mediaList, targetName, targetType);
     int targetIndex = -1;
 
-    if(!doesNameExist(mediaList, targetName)){
+    if(!mediaFound){
         std::cout << "ERROR: Title Does Not Exists\n";
         return;
     } 
 
     std::cout << "Found Media!\n";
     for(int i = 0; i < (int)mediaList.size(); i++){
-        if(targetName == mediaList[i].name){
+        if(targetName == mediaList[i].name && targetType == mediaList[i].type){
             targetIndex = i;
             break;
         }
@@ -928,17 +957,20 @@ void editMedia(std::vector<Media>& mediaList, EditField field){
 }
 
 void deleteMedia(std::vector<Media>& mediaList){
-    std::string targetName = getNameTarget();
+    std::string targetName;
+    MediaType targetType;
+    
+    bool mediaFound = getNameTarget(mediaList, targetName, targetType);
     int targetIndex = -1;
 
-    if(!doesNameExist(mediaList, targetName)){
+    if(!mediaFound){
         std::cout << "ERROR: Title Does Not Exists\n";
         return;
     } 
 
     std::cout << "Found Media!\n";
     for(int i = 0; i < (int)mediaList.size(); i++){
-        if(targetName == mediaList[i].name){
+        if(targetName == mediaList[i].name && targetType == mediaList[i].type){
             targetIndex = i;
             break;
         }

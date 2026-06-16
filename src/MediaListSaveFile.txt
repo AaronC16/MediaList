@@ -126,7 +126,7 @@ source=HBO Max
 ---
 name=Arcane
 type=SHOW
-rating=9
+rating=3
 status=WAITING
 amountViewed=18
 dateAdded=2026-06-09
@@ -141,4 +141,11 @@ amountViewed=23
 dateAdded=2026-06-16
 dateLastViewed=2026-06-16
 source=Netflix
+---
+name=Arcane
+type=MANGA
+status=PLANNED
+dateAdded=2026-06-16
+dateLastViewed=2026-06-16
+source=sdf
 ---
