@@ -748,7 +748,7 @@ std::vector<Media> searchMediaByString(const std::vector<Media>& mediaList){
 } 
 
 
-bool getNameTarget(const std::vector<Media>& mediaList, std::string& name, MediaType& type) {
+bool setNameAndType(const std::vector<Media>& mediaList, std::string& name, MediaType& type) {
     std::string target = promptStringUntilValid("Enter Title: ", isValidName);
     std::vector<Media> mediaInstances = {};
 
@@ -885,7 +885,7 @@ void editMedia(std::vector<Media>& mediaList, EditField field){
     std::string targetName;
     MediaType targetType;
     
-    bool mediaFound = getNameTarget(mediaList, targetName, targetType);
+    bool mediaFound = setNameAndType(mediaList, targetName, targetType);
     int targetIndex = -1;
 
     if(!mediaFound){
@@ -960,7 +960,7 @@ void deleteMedia(std::vector<Media>& mediaList){
     std::string targetName;
     MediaType targetType;
     
-    bool mediaFound = getNameTarget(mediaList, targetName, targetType);
+    bool mediaFound = setNameAndType(mediaList, targetName, targetType);
     int targetIndex = -1;
 
     if(!mediaFound){
