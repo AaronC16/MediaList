@@ -464,7 +464,7 @@ void addMedia(std::vector<Media>& mediaList){
     a.source = promptSource();
     a.completionStatus = promptStatus();
 
-    if(a.completionStatus != Status::PLANNED && a.completionStatus != Status::DROPPED){
+    if(a.completionStatus != Status::PLANNED){
         a.rating = promptRating();
         a.amountViewed = promptAmountViewed();
         a.dateAdded = getCurrentDate();
