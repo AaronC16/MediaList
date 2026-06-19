@@ -773,6 +773,7 @@ bool setNameAndType(const std::vector<Media>& mediaList, std::string& name, Medi
 
         std::cout << "Selection: ";
         std::cin >> menuSelection;
+        std::cin.ignore();
         std::cout << "\n";
         menuSelection--; //menus are 1-indexed
 
@@ -980,6 +981,7 @@ void deleteMedia(std::vector<Media>& mediaList){
     std::cout << "! ! ! Are you sure you would like to delete \"" << targetName << "\" from the list?\n"
               << "(Type \"DELETE\" or \"CANCEL\"): ";
     std::cin >> confirmation;
+    std::cin.ignore();
     
     if(confirmation == "DELETE"){
         mediaList.erase(mediaList.begin() + targetIndex);
