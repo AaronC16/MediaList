@@ -9,6 +9,7 @@
 #include<cstdlib>
 #include<cctype>
 #include<algorithm>
+#include<numeric>
 
 /*
 MediaTracker.cpp
@@ -993,8 +994,127 @@ void saveCSVToFile(const std::vector<Media>& mediaList, const std::string& fileN
     std::cout << "Saved to CSV!";
 }
 
+
 void returnToMainMenu(){
     std::cout << "Returning To Main Menu . . .\n";
+}
+
+//Stats Functions
+
+double calculateSum(const std::vector<int>& data) {
+    return std::accumulate(data.begin(), data.end(), 0.0);
+}
+
+double calculateMeanRating(const std::vector<Media>& mediaList) {
+    std::vector<int> data;
+
+    for(const auto& media : mediaList){
+        data.push_back(media.rating);
+    }
+
+    if (data.empty()) return 0.0;
+
+    return calculateSum(data) / data.size();
+}
+
+double calculateMedianRating(const std::vector<Media>& mediaList) {
+    std::vector<int> data;
+
+    for(const auto& media : mediaList){
+        data.push_back(media.rating);
+    }
+
+    if (data.empty()) return 0.0;
+
+    std::sort(data.begin(), data.end());
+
+    size_t size = data.size();
+
+    if (size % 2 == 0) {
+
+        return (data[size / 2 - 1] + data[size / 2]) / 2.0;
+
+    } else {
+
+        return data[size / 2];
+
+    }
+}
+
+int countType(const std::vector<Media>& mediaList, const MediaType& type){
+    int typeCount = 0;
+
+    for(const auto& media: mediaList){
+        if(media.type == type){
+            typeCount++;
+        }
+    }
+
+    return typeCount;
+}
+
+int countStatus(const std::vector<Media>& mediaList, const Status& status){
+    int statusCount = 0;
+
+    for(const auto& media: mediaList){
+        if(media.completionStatus == status){
+            statusCount++;
+        }
+    }
+
+    return statusCount;
+}
+
+int countRating(const std::vector<Media>& mediaList, int rating){
+    int count = 0;
+
+    for(const auto& media : mediaList){
+        if(media.rating == rating){
+            count++;
+        }
+    }
+
+    return count;
+}
+/*
+    yearAdded, yearViewed, and Source all will run through a list of their available options
+    instead of hard coding there options in the stats functions, since their options will 
+    increase over time.
+*/
+int countYearAdded(const std::vector<Media>& mediaList, std::string year){
+    int count = 0;
+
+    for(const auto& media : mediaList){
+        if(media.dateAdded.substr(0, 4) == year){
+            count++;
+        }
+    }
+
+    return count;
+}
+
+int countYearViewed(const std::vector<Media>& mediaList, std::string year){
+    int count = 0;
+
+    for(const auto& media : mediaList){
+        if(media.dateLastViewed.substr(0, 4) == year){
+            count++;
+        }
+    }
+
+    return count;
+}
+
+int countSource(const std::vector<Media>& mediaList, std::string source){
+    int count = 0;
+
+    for(const auto& media : mediaList){
+        if(media.source == source){
+            count++;
+        }
+    }
+
+    return count;
 }
 
 void runDeleteMenu(std::vector<Media>& mediaList){
@@ -1062,7 +1182,6 @@ void runAddMenu(std::vector<Media>& mediaList){
 
     callMenuAction("Add Media Menu", addMenuOptions);
 }
-
 
 void resizeConsoleWindow(int height, int width){
     std::cout << "\x1b[8;" << height << ";" << width << "t";
