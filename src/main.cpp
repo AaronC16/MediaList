@@ -613,7 +613,7 @@ bool isValidYear(std::string year){
     return true;
 }
 
-enum class SearchField{ NAME, STATUS, TYPE, SOURCE, YEAR_ADDED, YEAR_VIEWED, RATING };
+enum class SearchField{ NAME, STATUS, TYPE, SOURCE, YEAR_ADDED, YEAR_VIEWED, RATING, VIEWED };
 std::vector<Media> searchMedia(const std::vector<Media>& mediaList, const SearchField& field){
     std::vector<Media> result;
     
@@ -745,7 +745,58 @@ std::vector<Media> searchMediaByString(const std::vector<Media>& mediaList){
         }
     }
     return matchedMedia;
-} 
+}
+
+struct searchPrompt{
+    SearchField field;
+    std::string label;
+    int inputCode;
+    std::function<void()> prompt;
+};
+
+std::vector<searchPrompt> validSearchPrompts = {
+    {SearchField::NAME,        "Title",         1, promptName},
+    {SearchField::TYPE,        "Type",          2, promptType},
+    {SearchField::RATING,      "Rating",        3, promptRating},
+    {SearchField::STATUS,      "Status",        4, promptStatus},
+    {SearchField::YEAR_ADDED,  "Year Added",    5, promptDateLastViewed},
+    {SearchField::VIEWED,      "Amount Viewed", 6, promptAmountViewed},
+    {SearchField::YEAR_VIEWED, "Year Viewed",   7, promptDateLastViewed},
+    {SearchField::SOURCE,      "Source",        8, promptSource}
+};
+
+std::vector<searchPrompt> getSearchFields(){
+    std::cout << "Enter which fields you want to search by. . .\n";
+    for(const auto& field : validSearchPrompts){
+        std::cout << field.inputCode << ": " << field.label << "\n";
+    }
+
+    std::vector<searchPrompt> searchPrompts = {};
+    
+    while(true){
+        int selection;
+
+        std::cout << "Selection: ";
+        std::cin >> selection;
+        std::cin.ignore();
+
+        if(selection == -1){
+            break;
+        }
+
+        //find searchPrompt
+        for(const auto& field : validSearchPrompts){
+            if(selection == field.inputCode){
+                searchPrompts.push_back(field);
+            }
+        }
+
+        
+        std::cout << "\n";
+    }
+}
+
+std::vector<Media> searchByMany(const std::vector<Media>& mediaList){}
 
 
 bool setNameAndType(const std::vector<Media>& mediaList, std::string& name, MediaType& type) {
