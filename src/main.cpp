@@ -957,6 +957,19 @@ void editMedia(std::vector<Media>& mediaList, EditField field){
     std::cout << "Edit Successful!\n";
 }
 
+bool deleteConfirmation(const std::string& target){
+    std::string confirmation;
+    std::cout << "! ! ! Are you sure you would like to delete \"" << target << "\" from the list?\n"
+              << "(Type \"DELETE\" or \"CANCEL\"): ";
+    std::cin >> confirmation;
+    std::cin.ignore();
+
+    if(confirmation == "DELETE")
+        return true;
+
+    return false;
+}
+
 void deleteMedia(std::vector<Media>& mediaList){
     std::string targetName;
     MediaType targetType;
@@ -977,16 +990,11 @@ void deleteMedia(std::vector<Media>& mediaList){
         }
     }
 
-    std::string confirmation;
-    std::cout << "! ! ! Are you sure you would like to delete \"" << targetName << "\" from the list?\n"
-              << "(Type \"DELETE\" or \"CANCEL\"): ";
-    std::cin >> confirmation;
-    std::cin.ignore();
-    
-    if(confirmation == "DELETE"){
+    bool confirmed = deleteConfirmation(targetName);
+
+    if(confirmed){
         mediaList.erase(mediaList.begin() + targetIndex);
         saveToFile(mediaList, SAVE_FILE);
-
         std::cout << "\"" << targetName << "\" was deleted.\n";
     } else {
         std::cout << "canceling deletion . . .\n";
@@ -996,9 +1004,16 @@ void deleteMedia(std::vector<Media>& mediaList){
 void deleteLastAddedMedia(std::vector<Media>& mediaList){
     std::string mediaTitle = mediaList[mediaList.size() - 1].name;
     
-    mediaList.pop_back();
-    std::cout << "\"" << mediaTitle << "\"" << " was removed from the list.\n";
+    bool confirmed = deleteConfirmation(mediaTitle);
     
+    if(confirmed){
+        mediaList.pop_back();
+        saveToFile(mediaList, SAVE_FILE);
+        std::cout << "\"" << mediaTitle << "\"" << " was removed from the list.\n";
+    } else {
+        std::cout << "canceling deletion . . .\n";
+    }
+
     saveToFile(mediaList, SAVE_FILE);
 }
 
