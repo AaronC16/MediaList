@@ -711,6 +711,16 @@ std::vector<Media> searchMedia(const std::vector<Media>& mediaList, const Search
         }
     }
 
+    if(field == SearchField::VIEWED){
+        std::string prompt = "Enter Minimum Amount Viewed: ";
+        int searchViewed = promptIntUntilValid(prompt, isValidAmountViewed);
+
+        for(const auto& media : mediaList){
+            if(media.amountViewed >= searchViewed)
+                result.push_back(media);
+        }
+    }
+
     return result;
 }
 
@@ -783,9 +793,25 @@ std::vector<searchPrompt> getSearchFields(){
         std::cin.ignore();
 
         if(selection == -1){
+            std::cout << "\n";
             break;
+        } else if(selection < -1 || selection > maxSelections){
+            std::cout << "Invalid Selection . . .\n";
+            continue;
         }
 
+        bool duplicateSelection = false;
+        for(const auto& field : searchPrompts){
+            if(selection == field.inputCode){
+                std::cout << "Already Selected . . .\n";
+                duplicateSelection = true;
+                break;
+            }
+        }
+        if(duplicateSelection)
+            continue;
+
+        
         //find searchPrompt (could "searchPrompts.push_back(validSearchPrompts[selection])" work??)
         for(const auto& field : validSearchPrompts){
             if(selection == field.inputCode){
@@ -793,12 +819,33 @@ std::vector<searchPrompt> getSearchFields(){
                 selectionCount++;
             }
         }
-
-        std::cout << "\n";
     }
+
+    std::cout << "\nField Selection Complete . . .\n";
+    std::cout << "(";
+    for(int i = 0; i < (int)searchPrompts.size(); i++){
+        std::cout << searchPrompts[i].inputCode;
+        if(i < (int)searchPrompts.size() - 1)
+            std::cout << ", ";
+    }
+    std::cout << ") are the selected fields\n";
+
+    return searchPrompts;
 }
 
-std::vector<Media> searchByMany(const std::vector<Media>& mediaList){}
+std::vector<Media> searchByMany(const std::vector<Media>& mediaList){
+    std::vector<searchPrompt> fieldPrompts = getSearchFields();
+
+    std::vector<Media> searchMany;
+    for(int i = 0; i < (int)fieldPrompts.size(); i++){
+        if(i == 0){
+            searchMany = searchMedia(mediaList, fieldPrompts[i].field);
+        } else {
+            searchMany = searchMedia(searchMany, fieldPrompts[i].field);
+        }
+    }
+    return searchMany;
+}
 
 
 bool setNameAndType(const std::vector<Media>& mediaList, std::string& name, MediaType& type) {
@@ -1135,6 +1182,7 @@ void runSearchMenu(const std::vector<Media>& mediaList){
         {"Search by Year Viewed", [&]() { printMediaTable(searchMedia(mediaList, SearchField::YEAR_VIEWED)); }},
         {"Search by Source",      [&]() { printMediaTable(searchMedia(mediaList, SearchField::SOURCE)); }},
         {"Search by String",      [&]() { printMediaTable(searchMediaByString(mediaList)); }},
+        {"Search by Many",        [&]() { printMediaTable(searchByMany(mediaList)); }},
         
     };
 
