@@ -772,11 +772,13 @@ std::vector<searchPrompt> getSearchFields(){
     }
 
     std::vector<searchPrompt> searchPrompts = {};
-    
-    while(true){
+    int maxSelections = validSearchPrompts.size();
+    int selectionCount = 0;
+
+    while(selectionCount < maxSelections){
         int selection;
 
-        std::cout << "Selection: ";
+        std::cout << "Selection(-1 to exit): ";
         std::cin >> selection;
         std::cin.ignore();
 
@@ -784,14 +786,14 @@ std::vector<searchPrompt> getSearchFields(){
             break;
         }
 
-        //find searchPrompt
+        //find searchPrompt (could "searchPrompts.push_back(validSearchPrompts[selection])" work??)
         for(const auto& field : validSearchPrompts){
             if(selection == field.inputCode){
                 searchPrompts.push_back(field);
+                selectionCount++;
             }
         }
 
-        
         std::cout << "\n";
     }
 }
